@@ -9,8 +9,14 @@ for i in myList:    # 这里的i是value不是下标key哦
 
 
 # 还可用来遍历普通范围，配合range使用
+print("=======range=======")
 for i in range(5):
-    print(i)
+    print(i)    # 0到5
 
+print("=======range=======")
 for i in range(1, 3):
-    print(i)
+    print(i)    # 1到2，左闭右开
+
+print("=======range=======")
+for i in range(1, 100, 10):
+    print(i)    # 1开始，普通情况是每次循环i+1，但这里是每次i+10，所以结果是1 11 21 ...91

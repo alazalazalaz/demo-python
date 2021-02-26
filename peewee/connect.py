@@ -1,19 +1,27 @@
 import peewee
+import random
+
+db_name = "test"
+db = peewee.MySQLDatabase(db_name, host='127.0.0.1', port=3306, user='root', passwd='123456', charset='utf8')
+db.connect()
 
 
-def connect_db():
-    db_name = "test"
-    mysql_db = peewee.MySQLDatabase(db_name, host='127.0.0.1', port=3306, user='root', passwd='123456', charset='utf8')
-    print(mysql_db.connect())   # True or peewee.OperationalError
-    return mysql_db
+class BaseModel(peewee.Model):
+    print("x")
+    # class Meta:
+    #     database = get_db()
+    #     database.connect()
+    #     print("connect instance : {}".format(database))
 
 
-class MySQLModel(peewee.Model):
-    class Meta:
-        database = connect_db()
+if __name__ == '__main__':
+    db = mysql_db
+    print("is closed:{}".format(db.is_closed()))
+    print("connect1 result : {} instance : {}".format(db.connect(), db))
+    print("is closed:{}".format(db.is_closed()))
+    print("connect2 result : {} instance : {}".format(db.connect(), db))
 
 
-connect_db()
 
 
 
