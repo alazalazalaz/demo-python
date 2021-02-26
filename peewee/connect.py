@@ -3,7 +3,8 @@ import random
 
 db_name = "test"
 db = peewee.MySQLDatabase(db_name, host='127.0.0.1', port=3306, user='root', passwd='123456', charset='utf8')
-db.connect()
+if db.is_closed():
+    db.connect()
 
 
 class BaseModel(peewee.Model):
@@ -15,7 +16,6 @@ class BaseModel(peewee.Model):
 
 
 if __name__ == '__main__':
-    db = mysql_db
     print("is closed:{}".format(db.is_closed()))
     print("connect1 result : {} instance : {}".format(db.connect(), db))
     print("is closed:{}".format(db.is_closed()))
