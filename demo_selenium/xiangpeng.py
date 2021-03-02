@@ -90,8 +90,8 @@ def check_search_status_verify():
 
     xy_array = get_slider_move_xy(bg_img_path, front_img_path, "./img/temp.jpg")
     print(xy_array)
-    @todo
     exit()
+    # driver.switch_to.default_content()  # 切回主DOM
 
     try:
         element = WebDriverWait(driver, slider_bg_timeout_sec).until(
