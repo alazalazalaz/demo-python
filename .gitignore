@@ -1,3 +1,5 @@
 .idea
 demo_selenium/geckodriver.log
-
+demo_selenium/*.png
+demo_selenium/*.jpeg
+demo_selenium/*.jpg

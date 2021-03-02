@@ -10,19 +10,35 @@ import numpy as np
 # exit()
 
 
-index = 1
+def get_slider_move_xy(bg_img_path, front_img_path, temp_img):
+    bg_img = cv2.imread(bg_img_path)
+    front_img = cv2.imread(front_img_path)
 
-bg_img = cv2.imread("./img/cap_background_{}.jpeg".format(index))
-font_img = cv2.imread("./img/cap_front_{}.png".format(index))
-targ = './img/targ.jpg'
+    bg_img = cv2.cvtColor(bg_img, cv2.COLOR_BGR2GRAY)
+    bg_img = abs(255 - bg_img)
+    cv2.imwrite(temp_img, bg_img)
+    bg_img = cv2.imread(temp_img)
+    result = cv2.matchTemplate(bg_img, front_img, cv2.TM_CCOEFF_NORMED)
+    y, x = np.unravel_index(result.argmax(), result.shape)
+    return [x, y]
 
-bg_img = cv2.cvtColor(bg_img, cv2.COLOR_BGR2GRAY)
-bg_img = abs(255 - bg_img)
-cv2.imwrite(targ, bg_img)
-bg_img = cv2.imread(targ)
-result = cv2.matchTemplate(bg_img, font_img, cv2.TM_CCOEFF_NORMED)
-y, x = np.unravel_index(result.argmax(), result.shape)
-# 展示圈出来的区域
-print("识别结果： x:{} y:{}".format(x, y))
-cv2.rectangle(bg_img, (x, y), (x + 10, y + 10), (7, 249, 151), 2)
-cv2.imwrite("./img/cap_background_result_{}.jpg".format(index), bg_img)
+
+def main():
+    index = 2
+
+    bg_img = "./img/cap_background_{}.jpeg".format(index)
+    front_img = "./img/cap_front_{}.png".format(index)
+    temp_img = './img/targ.jpg'
+
+    xy_array = get_slider_move_xy(bg_img, front_img, temp_img)
+    x = xy_array[0]
+    y = xy_array[1]
+    # 展示圈出来的区域
+    print("识别结果： x:{} y:{}".format(x, y))
+    cv2.rectangle(bg_img, (x, y), (x + 10, y + 10), (7, 249, 151), 2)
+    cv2.imwrite("./img/cap_background_result_{}.jpg".format(index), bg_img)
+
+
+if __name__ == '__main__':
+    main()
+
