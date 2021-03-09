@@ -12,6 +12,7 @@ import numpy as np
 from cal_distance import get_track2 as trace_func
 import random
 import re
+import shutil
 
 
 STATUS_NORMAL = 0   # 正常状态
@@ -90,9 +91,8 @@ def is_return_data():
     return True
 
 
-def is_need_verify():
+def is_need_verify(slider_bg_timeout_sec):
     # 检查是否需要验证码
-    slider_bg_timeout_sec = 5
 
     try:
         WebDriverWait(driver, slider_bg_timeout_sec).until(
@@ -105,41 +105,64 @@ def is_need_verify():
     return True
 
 
-def do_verify():
+def do_verify(i):
+    # 验证验证码，即滑动滑块
     handle = driver.current_window_handle
+    driver.switch_to.frame("tcaptcha_iframe")  # 切换到iframe DOM
 
-    xy = _handle_img_xy()
-    x = xy[0]
+    xy_and_img_local_path = _handle_img_xy()
+    x = xy_and_img_local_path['xy'][0]
+    # test data
+    # if i == 0:
+    #     x = 100
 
+    _handle_slider_move(x)
     # driver.switch_to.default_content()  # 切回主DOM
-    # driver.switch_to.window(handle)
+    driver.switch_to.window(handle)
+    return xy_and_img_local_path
 
-    # _handle_slider_move(x)
 
-    return False
+def record_failed_img(xy_and_img_local_path):
+    # 移动验证失败的图片到指定目录
+    for i in range(len(xy_and_img_local_path['img_path'])):
+            shutil.move(xy_and_img_local_path['img_path'][i], "./img/slider/error_img")
+
+    return True
+
+
+def refresh_verify():
+    # 刷新验证码
+    handle = driver.current_window_handle
+    driver.switch_to.frame("tcaptcha_iframe")  # 切换到iframe DOM
+
+    driver.find_element_by_id("reload").click()
+
+    driver.switch_to.window(handle)
+    return True
 
 
 def _handle_img_xy():
-    driver.switch_to.frame("tcaptcha_iframe")  # 切换到iframe DOM
-
     # 获取两张图片地址
+    time.sleep(0.5)
     bg_img = driver.find_element_by_id("slideBg").get_attribute("src")
     front_img = driver.find_element_by_id("slideBlock").get_attribute("src")
-    @todo从这里才是测试
-    print("北京图片：{}\r\n{}".format(bg_img, front_img))
-    exit()
+    print("背景图片：{}\r\n{}".format(bg_img, front_img))
 
     # 计算出图片后缀
     img_index_and_sub_sid = _get_slider_subsid(bg_img)
     img_index = img_index_and_sub_sid[0]
     sub_sid = img_index_and_sub_sid[1]
+    print("img_index={} sub_sid={}".format(img_index, sub_sid))
 
     # 生成图片本地地址
     t = _date()
     bg_img_path = _get_slider_img_bg_path(sub_sid, img_index, t)
     front_img_path = _get_slider_img_front_path(sub_sid, img_index, t)
     temp_img_path = _get_slider_img_temp_path(sub_sid, img_index, t)
-    result_img_path = _get_slider_img_temp_path(sub_sid, img_index, t)
+    result_img_path = _get_slider_img_result_path(sub_sid, img_index, t)
+    result_txt_path = _get_slider_txt_result_path(sub_sid, img_index, t)
+    bg_img_src_path = _get_slider_txt_bg_path(sub_sid, img_index, t)
+    print("保存地址：{}".format(bg_img_path))
 
     # 抓取图片并保存
     r = requests.get(bg_img)
@@ -155,8 +178,20 @@ def _handle_img_xy():
     xy_array = get_slider_move_xy(bg_img_path, front_img_path, temp_img_path, result_img_path)
     x = xy_array[0]
     y = xy_array[1]
-    print("获取滑块位置：x={}, y={}".format(x, y))
-    return xy_array
+    print("计算结果位置：x={}, y={}".format(x, y))
+
+    # 保存x数据到txt
+    file_handle = open(result_txt_path, 'w')
+    file_handle.write("{}".format(x))
+
+    # 保存bg src到txt
+    file_handle = open(bg_img_src_path, 'w')
+    file_handle.write(bg_img)
+
+    result = {}
+    result["xy"] = xy_array
+    result["img_path"] = [bg_img_path, front_img_path, temp_img_path, result_img_path, result_txt_path, bg_img_src_path]
+    return result
 
 
 def _handle_slider_move(x):
@@ -185,10 +220,6 @@ def _get_slider_subsid(img_path):
     return [img_index, subsid]
 
 
-def _get_slider_img_dir_path():
-    return "./img/slider/".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-
-
 def _get_slider_img_bg_path(subsid, img_index, t):
     return "./img/slider/{}_{}_{}_bg.jpeg".format(subsid, img_index, t)
 
@@ -205,6 +236,14 @@ def _get_slider_img_result_path(subsid, img_index, t):
     return "./img/slider/{}_{}_{}_result.png".format(subsid, img_index, t)
 
 
+def _get_slider_txt_result_path(subsid, img_index, t):
+    return "./img/slider/{}_{}_{}_result.txt".format(subsid, img_index, t)
+
+
+def _get_slider_txt_bg_path(subsid, img_index, t):
+    return "./img/slider/{}_{}_{}_bg_src.txt".format(subsid, img_index, t)
+
+
 def collect_data():
     return True
 
@@ -217,10 +256,20 @@ def main():
         collect_data()
         # continue
 
-    if is_need_verify():   # 判断是否需要验证码
+    if is_need_verify(5):    # 判断是否需要验证验证码
         for i in range(VERIFY_RETRY):
-            if do_verify():
+            xy_and_img_local_path = do_verify(i)
+            time.sleep(2)
+            if is_need_verify(1):
+                print("第{}次验证失败，准备重试。".format(i))
+                record_failed_img(xy_and_img_local_path)
+                refresh_verify()
+                time.sleep(2)
+            else:
+                print("第{}次验证成功。".format(i))
                 break
+
+    print("over")
 
 
 def _date():

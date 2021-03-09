@@ -24,7 +24,7 @@ def get_slider_move_xy(bg_img_path, front_img_path, temp_img):
 
 
 def main():
-    index = 2
+    index = 4
 
     bg_img = "./img/cap_background_{}.jpeg".format(index)
     front_img = "./img/cap_front_{}.png".format(index)
