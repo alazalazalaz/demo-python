@@ -38,19 +38,27 @@ def click_search():
     # driver.quit()
 
     assert "祥鹏" in driver.title  # 判断标题中是否含有Python，如果没有，则终止
-    # 出发
+    # 选定出发
     from_city_input = driver.find_element_by_xpath("//input[@placeholder='出发城市']")
     from_city_input.clear()  # 清空input
     from_city_input.send_keys("KMG")  # 输入pycon到input
     time.sleep(0.5)
     from_city_input.send_keys(Keys.RETURN)  # 回车
 
-    # 到达
+    # 选定到达
     to_city_input = driver.find_element_by_xpath("//input[@placeholder='到达城市']")
     to_city_input.clear()  # 清空input
     to_city_input.send_keys("CTU")  # 输入pycon到input
     time.sleep(0.5)
     to_city_input.send_keys(Keys.RETURN)  # 回车
+
+    # 选定日期
+    # time.sleep(3)
+    # click_date = "2021-03-13"
+    # month_header = driver.find_element_by_xpath("//span[text()='三月 2021年']")
+    # click_date_el = month_header.find_element_by_xpath(".//..//..").find_element_by_xpath("//span[text()='15']")
+    # click_date_el.click()
+    # time.sleep(2)
 
     # 搜索
     search_button = driver.find_element_by_xpath("//button[@type='button']")

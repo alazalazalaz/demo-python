@@ -3,3 +3,6 @@ demo_selenium/geckodriver.log
 demo_selenium/*.png
 demo_selenium/*.jpeg
 demo_selenium/*.jpg
+demo_selenium/img/slider/*.png
+demo_selenium/img/slider/*.jpeg
+demo_selenium/img/slider/*.txt
