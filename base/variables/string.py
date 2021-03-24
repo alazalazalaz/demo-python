@@ -23,3 +23,7 @@ multStr = """这是一个
 实例"""
 print(multStr)
 
+# 字符串分隔为数组
+str1 = "-aaa=bbb"
+param, val = str1.split("=")
+print(param, val)

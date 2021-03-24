@@ -6,15 +6,22 @@ import calendar
 print(time.time())  # 1614175762.453156
 print(int(time.time()))     # 1614175762
 
+# 字符串转时间戳
+date = "2020-08-08 01:01:01"
+t = time.mktime(time.strptime(date, "%Y-%m-%d %H:%M:%S"))
+print("字符串转时间戳 {}".format(int(t)))
+
 # 当前年月日
 timestamp = time.time()
 date = time.localtime(timestamp)  # timestamp可以不传，默认为当前时间戳
 # 2021-2-24 22:16:13
-print("{}-{}-{} {}:{}:{}".format(date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec))
+print("单独的 {}-{}-{} {}:{}:{}".format(date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec))
 # 2021-02-24 22:19:58
 # time.strftime()方法的分钟和秒是用大写的M和S，其他语言是i和s（Y-m-d H:i:s）
 print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
 
+# 获取年月
+print(time.strftime("%B", time.localtime()))
 # %y 两位数的年份表示（00-99）
 # %Y 四位数的年份表示（000-9999）
 # %m 月份（01-12）

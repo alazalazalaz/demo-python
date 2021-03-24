@@ -3,7 +3,7 @@ from user_model import PyUser
 
 # 单条插入
 u = PyUser()
-u.username = "allen.zhang16"
+u.username = "allen.zhang30"
 u.email = "ss@qq.com"
 print("save result : {}".format(u.save()))     # 1 返回插入的条目数
 

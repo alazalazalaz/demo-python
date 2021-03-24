@@ -22,9 +22,10 @@ class Car:
         print("父类的price={}".format(self.price))
 
 
-# car1 = Car()
-# print(car1.get_name())
-# print("=============")
+car1 = Car()
+print(car1.get_name())
+print("=============")
+
 
 # 继承
 class Sedan(Car):
