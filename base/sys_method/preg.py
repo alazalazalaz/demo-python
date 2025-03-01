@@ -30,7 +30,7 @@ if rs1:
 
 # .* 表示任意匹配除换行符（\n、\r）之外的任何单个或多个字符相当于\s\S
 # (.*?) 表示"非贪婪"模式，只保存第一个匹配到的子串
-rs2 = re.search(r'(.*) bb (.*?) (.*) .*', " aa bb cc dd ee ff", re.I)   # 注意那个r是后面的字符串不要转移的意思哦，详见variables/string.py
+rs2 = re.search(r'(.*) bb (.*?) (.*) .*', " aa bb cc dd ee ff", re.I)   # 注意那个r是后面的字符串不要转移的意思哦，详见variables/common_string.py
 if rs2:
     print(rs2)
     print(rs2.group(0))     # aa bb cc dd ee ff

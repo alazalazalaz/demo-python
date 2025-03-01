@@ -36,6 +36,9 @@ print(calList)      # [1, 2, 5, 9] 正序 (正序后再反转即可实现逆序)
 
 # for 循环获取索引
 # for key, arg in enumerate(sys.argv):
+    # print(key, arg)
+for key, v in  enumerate(calList): #使用enumerate()函数来循环数组
+    print(key, v)
 
 
 # 其他函数
