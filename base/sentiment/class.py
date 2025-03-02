@@ -10,7 +10,7 @@ class Car:
 
     def __init__(self):     # 构造函数，实例化的时候会自动调用
         self.name = "car"
-        print("我的父类的构造")
+        print("我是父类的构造")
 
     def __del__(self):
         print("我是父类的析构")
@@ -23,18 +23,20 @@ class Car:
 
 
 car1 = Car()
-print(car1.get_name())
+car1.name = "car1Name"
+car1.get_name()
 print("=============")
 
 
 # 继承
+# 关于继承，除了成员方法会主动覆盖掉父类的同名方法，成员变量和构造析构函数，都不会主动覆盖父类的！！！
 class Sedan(Car):
     name = "sedan"  # 此处的成员变量name和price不会自动覆盖掉父类的哦！！！
     price = 20
 
     def __init__(self):
         Car.__init__(self)  # 父类构造函数需要手动执行，否则不会执行
-        print("我的子类的构造")
+        print("我是子类的构造")
 
     def __del__(self):
         print("我是子类的析构")

@@ -11,8 +11,8 @@ date = "2020-08-08 01:01:01"
 t = time.mktime(time.strptime(date, "%Y-%m-%d %H:%M:%S"))
 print("字符串转时间戳 {}".format(int(t)))
 
-# 当前年月日
-timestamp = time.time()
+# 时间戳转格式化字符串
+timestamp = time.time() # 当前时间戳
 date = time.localtime(timestamp)  # timestamp可以不传，默认为当前时间戳
 # 2021-2-24 22:16:13
 print("单独的 {}-{}-{} {}:{}:{}".format(date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec))

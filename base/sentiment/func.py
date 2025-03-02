@@ -7,20 +7,21 @@ def hello():
     print("hello")
 
 
-hello()
+hello()  # hello
 
 
 def plus(a, b=4):
     print(a + b)
 
 
-plus(1)
+plus(1) # 5
 
 
 # 不定长参数,使用*，表示以元祖的形式加入，不同于go的省略号func test(arg1 string, argMore ...string)
 def func_param(arg1, *var_tuple):
-    print(arg1)
-    print(var_tuple)
+    print(arg1) # 1
+    print(var_tuple) #(2, 3, 4)
+    print(var_tuple[0]) # 2
 
 
 func_param(1, 2, 3, 4)
@@ -31,5 +32,5 @@ func_param(1, 2, 3, 4)
 # func_name = lambda [arg1 [,arg2,.....argn]]:expression
 
 sum_func = lambda a, b: a + b
-print(sum_func(10, 20))
+print(sum_func(10, 20)) # 30
 

@@ -5,10 +5,10 @@
 myList = [1, 2, 3, 4]
 it = iter(myList)     # 创建迭代器对象
 for x in it:
-    print(x, myList.index(x))   # 输出元素和索引
+    print(x, myList.index(x))   # 输出元素和索引， 如果myList中不存在value x，会引起Exception
 
 myDict = {}
 myDict["one"] = "china"
 myDict["two"] = "japan"
 for x in iter(myDict):
-    print(x, myDict[x])     # 输出索引和元素
+    print(x, myDict[x])     # 输出索引和元素，不同于list，list用的是enumerate()
