@@ -1,23 +1,26 @@
 # preg 正则
 import re
 
-print("============= re.match() =================")
+print("============= re.match() =================普通正则匹配，返回的是字符串")
 # re.match()
-# 尝试从字符串的起始位置匹配一个模式，如果不是起始位置匹配成功的话，match()就返回none
+# 按照pattern正则匹配一次，有就返回，没有就返回None
 # result = re.match(pattern, string, flags) # pattern表达式，string字符串，flags标志(是否大小写多行匹配这些)
 # 与php不同，re.match()如果匹配成功，返回的是一个对象，失败返回None
 # 如果匹配成功，可使用result.group(num)或result.groups()来获取结果
 re1 = re.match("baidu", "www.baidu.com")
 print(re1)  # None
 
-re2 = re.match("www", "www.baidu.com")
+re2 = re.match("\w+.baidu", "www.baidu.com,www.baidu.com")
 if re2:
-    print(re2)  # <re.Match object; span=(0, 3), match='www'>对象
-    print(re2.group(0))  # www
+    print(re2)  # <re.Match object; span=(0, 9), match='www.baidu'>
+    print(re2.group(0))  # www.baidu
     # print(re2.group(1))     # 这样会报IndexError错哟，因为只匹配到一个www
 
+re3 = re.compile("\w+.baidu").findall("www.baidu.com,www.baidu.com")
+if re3:
+    print(re3) # ['www.baidu', 'www.baidu'] findall就会返回多个结果，
 
-print("============= re.search() =================")
+print("============= re.search() =================字符串搜索，返回的是搜索到的位置")
 # re.search()
 # 扫描整个字符串并返回第一个成功的匹配
 # result = re.search(pattern, string, flags=0) 参数同上
@@ -41,9 +44,9 @@ if rs2:
 # re.match()和re.search()的区别在于，match是从第一个字符开始匹配，search是整个字符串搜索
 
 
-print("============= re.compile() =================")
+print("============= re.compile() =================正则匹配")
 # re.compile()
-# 用于生产正则表达式，供re.search()和re.match()使用。
+# 用于生产正则表达式，供re.search()和re.match()使用。！！！
 # re.compile(pattern, flags)
 # 上面的例子可以修改为如下
 sss = "aa bb cc dd ee ff"
